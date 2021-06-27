@@ -36,9 +36,15 @@ public class CompanyController {
         return service.edit(id,companyDTO);
     }
 
-    @GetMapping("/jobs" + ENTITY)
+    @GetMapping("/jobs/recruiter" + ENTITY)
     public CompanyDTO getByUserId(@PathVariable Long id){
         CompanyDTO companyDTO = service.getByUserId(id);
+        return companyDTO;
+    }
+
+    @GetMapping("/jobs" + ENTITY)
+    public CompanyDTO getCompanyById(@PathVariable Long id){
+        CompanyDTO companyDTO = service.get(id);
         return companyDTO;
     }
 
