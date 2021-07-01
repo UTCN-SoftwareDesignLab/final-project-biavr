@@ -42,9 +42,10 @@ public class Application {
     @Column(nullable = true, length = 1024)
     private String message;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "resume_id", referencedColumnName = "id")
-    private FileDB resume;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "resume_id", referencedColumnName = "id")
+    @Column
+    private String resume;
 
     @Column
     private String review;

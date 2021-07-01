@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     List<Application> findAllByJobLike(Job job);
-    List<ApplicationDTO> findAllByJob(Job job);
+    List<Application> findAllByJob(Job job);
 }

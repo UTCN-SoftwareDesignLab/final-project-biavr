@@ -1,6 +1,7 @@
 package com.recruitment.application;
 
 import com.recruitment.application.dto.ApplicationDTO;
+import com.recruitment.application.mapper.ApplicationMapper;
 import com.recruitment.company.dto.CompanyDTO;
 import com.recruitment.email.EmailService;
 import com.recruitment.upload.FileDB;
@@ -8,6 +9,7 @@ import com.recruitment.upload.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 import static com.recruitment.UrlMapping.APPLICATIONS;
@@ -18,19 +20,18 @@ import static com.recruitment.UrlMapping.ENTITY;
 public class ApplicationController {
 
     private final ApplicationService service;
+    private final ApplicationMapper mapper;
     private final EmailService emailService;
     private final FileStorageService fileStorageService;
 
     @PostMapping(APPLICATIONS)
-    public ApplicationDTO create(@RequestBody ApplicationDTO app){
-        //emailService.sendEmail(app.getEmail());
-        emailService.sendEmail("bianca.avram99@yahoo.ro");
-        //FileDB cv = fileStorageService.getFile(app.getResume());
+    public ApplicationDTO create(@RequestBody ApplicationDTO app) {
         return service.create(app);
     }
 
     @PatchMapping(APPLICATIONS + ENTITY)
     public ApplicationDTO edit(@PathVariable Long id, @RequestBody ApplicationDTO app){
+        //here we also want to send an email with "YOUR APPLICATION HAS BEEN REVIEWED" + the review on the applicatoin
         return service.edit(id,app);
     }
 

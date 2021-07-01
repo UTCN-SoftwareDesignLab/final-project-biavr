@@ -28,7 +28,6 @@ public class FileDB {
     @Lob
     private byte[] data;
 
-
     public FileDB(String fileName, String contentType, byte[] bytes) {
         this.name = fileName;
         this.type = contentType;

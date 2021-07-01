@@ -3,13 +3,17 @@ package com.recruitment.application;
 import com.recruitment.application.dto.ApplicationDTO;
 import com.recruitment.application.mapper.ApplicationMapper;
 import com.recruitment.application.model.Application;
+import com.recruitment.application.report.PdfSummaryService;
 import com.recruitment.company.CompanyService;
 import com.recruitment.company.dto.CompanyDTO;
+import com.recruitment.email.EmailService;
 import com.recruitment.job.model.Job;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +26,8 @@ public class ApplicationService {
     private final ApplicationRepository repository;
     private final ApplicationMapper mapper;
     private final CompanyService companyService;
+    private final PdfSummaryService reportService;
+    private final EmailService emailService;
 
     private Application findById(Long id){
         return repository.findById(id)
@@ -38,14 +44,34 @@ public class ApplicationService {
 //            System.out.println(job);
 //            List<ApplicationDTO> foundApplications = repository.findAllByJobLike(job)
 //                    .stream().map(mapper::toDTO).collect(Collectors.toList());
-            List<ApplicationDTO> foundApplications = repository.findAllByJob(job);
+            List<ApplicationDTO> foundApplications = repository.findAllByJob(job)
+                    .stream()
+                    .map(mapper::toDTO)
+                    .collect(Collectors.toList());
             apps.addAll(foundApplications);
         }
         return apps;
     }
 
     public ApplicationDTO create(ApplicationDTO application){
-        return mapper.toDTO(repository.save(mapper.fromDTO(application)));
+        ApplicationDTO app = mapper.toDTO(repository.save(mapper.fromDTO(application)));
+        try{
+            reportService.export(app);
+        }
+        catch (IOException e){
+            System.out.println("FAILURE AT PDF");
+            return null;
+        }
+        String path = "D:\\C.S. UTCN\\3rd year\\SD\\final-project-biavr\\RecruitmentApplication\\backend\\pdf_reports\\";
+        String filename = "Application_"+app.getJob().getName()+"_"+app.getFirstName()+"_"+app.getLastName()+".pdf";
+        try {
+            emailService.sendConfirmationEmail(app.getEmail(), path+filename);
+        }
+        catch (MessagingException e){
+            System.out.println("FAILURE AT EMAIL");
+            return null;
+        }
+        return app;
     }
 
     public ApplicationDTO edit(Long id, ApplicationDTO application){
@@ -59,7 +85,10 @@ public class ApplicationService {
         actApp.setLastName(application.getLastName());
         actApp.setReview(application.getReview());
         actApp.setPhoneNumber(application.getPhoneNumber());
-        return mapper.toDTO(repository.save(actApp));
+
+        ApplicationDTO reviewedApp = mapper.toDTO(repository.save(actApp));
+        emailService.sendReviewEmail(actApp.getEmail(),actApp.getReview());
+        return reviewedApp;
     }
 
     public void delete(Long id){

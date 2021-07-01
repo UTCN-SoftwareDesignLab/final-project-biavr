@@ -18,11 +18,9 @@ import static com.recruitment.UrlMapping.ENTITY;
 public class CompanyController {
 
     private final CompanyService service;
-    private final EmailService emailService;
 
     @GetMapping
     public List<CompanyDTO> allCompanies(){
-        //emailService.sendEmail("0764199936@tmomail.net");
         return service.findAll();
     }
 

@@ -4,6 +4,8 @@ import com.recruitment.job.dto.JobDTO;
 import com.recruitment.job.mapper.JobMapper;
 import com.recruitment.job.model.Job;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 public class JobService {
     private final JobMapper mapper;
     private final JobRepository repository;
+
+    @Autowired
+    private final SimpMessagingTemplate template;
 
     private Job findById(Long id) {
         return repository.findById(id)
@@ -28,6 +33,7 @@ public class JobService {
     }
 
     public JobDTO create(JobDTO job) {
+        this.template.convertAndSend("/topic/socket/companies","New job available: "+job.getName());
         return mapper.toDTO(repository.save(
                 mapper.fromDTO(job)
         ));

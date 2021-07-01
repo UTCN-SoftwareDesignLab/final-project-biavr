@@ -2,12 +2,11 @@ package com.recruitment.user;
 
 import com.recruitment.user.dto.UserListDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.recruitment.UrlMapping.ENTITY;
 import static com.recruitment.UrlMapping.USERS;
 
 @RestController
@@ -22,4 +21,19 @@ public class UserController {
         return userService.allUsersForList();
     }
 
+    @PostMapping(ENTITY)
+    public UserListDTO makeRecruiter(@PathVariable Long id){
+        return userService.makeRecruiter(id);
+    }
+
+    @DeleteMapping(ENTITY)
+    public void deleteUser(@PathVariable Long id){
+        userService.delete(id);
+    }
+
+    @GetMapping("/companies")
+    public List<UserListDTO> allSeekers(){
+        List<UserListDTO> seekers = userService.findAllSeekers();
+        return seekers;
+    }
 }

@@ -33,6 +33,10 @@ public class FileStorageService {
         return fileDBRepository.findById(id).get();
     }
 
+    public FileDB getFileByName(String name){
+        return fileDBRepository.findFileDBByName(name);
+    }
+
     public Stream<FileDB> getAllFiles() {
         return fileDBRepository.findAll().stream();
     }

@@ -21,7 +21,7 @@ public class ApplicationDTO {
     private String phoneNumber;
     private String address;
     private String message;
-    private FileDB resume;
+    private String resume;
     private String review;
     private Job job;
 }

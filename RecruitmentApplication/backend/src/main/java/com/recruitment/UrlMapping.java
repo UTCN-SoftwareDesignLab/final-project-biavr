@@ -10,6 +10,7 @@ public class UrlMapping {
     public static final String COMPANIES = API_PATH + "/companies";
     public static final String JOBS = COMPANIES + "/jobs";
     public static final String APPLICATIONS = JOBS + "/applications";
+    public static final String CALENDAR = APPLICATIONS + "/calendar";
 
     public static final String JOB_ADDITION = "/topic/socket/companies/jobs";
 

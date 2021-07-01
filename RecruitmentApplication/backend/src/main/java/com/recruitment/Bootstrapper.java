@@ -71,13 +71,43 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
                     .build());
             authService.register(SignupRequest.builder()
                     .email("bianca1@email.com")
-                    .username("biancaR")
+                    .username("biancaRamazon")
+                    .password("WooHoo1!")
+                    .roles(Set.of("RECRUITER"))
+                    .build());
+            authService.register(SignupRequest.builder()
+                    .email("bianca4@email.com")
+                    .username("biancaRebay")
+                    .password("WooHoo1!")
+                    .roles(Set.of("RECRUITER"))
+                    .build());
+            authService.register(SignupRequest.builder()
+                    .email("bianca5@email.com")
+                    .username("biancaRgoogle")
+                    .password("WooHoo1!")
+                    .roles(Set.of("RECRUITER"))
+                    .build());
+            authService.register(SignupRequest.builder()
+                    .email("bianca6@email.com")
+                    .username("biancaRutcn")
+                    .password("WooHoo1!")
+                    .roles(Set.of("RECRUITER"))
+                    .build());
+            authService.register(SignupRequest.builder()
+                    .email("bianca7@email.com")
+                    .username("biancaRmicrosoft")
                     .password("WooHoo1!")
                     .roles(Set.of("RECRUITER"))
                     .build());
             authService.register(SignupRequest.builder()
                     .email("bianca2@email.com")
-                    .username("biancaS")
+                    .username("biancaS1")
+                    .password("WooHoo1!")
+                    .roles(Set.of("SEEKER"))
+                    .build());
+            authService.register(SignupRequest.builder()
+                    .email("bianca3@email.com")
+                    .username("biancaS2")
                     .password("WooHoo1!")
                     .roles(Set.of("SEEKER"))
                     .build());
@@ -94,22 +124,44 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
                     .name("HR specialist")
                     .description("Description of HR specialist")
                     .domain("HR").build());
+            JobDTO lecturer =jobService.create(JobDTO.builder()
+                    .name("Lecturer")
+                    .description("Description of lecturer")
+                    .domain("Teaching").build());
+            JobDTO pr =jobService.create(JobDTO.builder()
+                    .name("Public Relations Intern")
+                    .description("Description of PR")
+                    .domain("PR").build());
 
             companyService.create(CompanyDTO.builder()
                     .name("Amazon")
                     .description("This is the description of Amazon.")
                     .jobs(Set.of(jobMapper.fromDTO(seng)))
-                    .users(Set.of(userRepository.findByUsername("biancaR").get()))
+                    .users(Set.of(userRepository.findByUsername("biancaRamazon").get()))
                     .build());
             companyService.create(CompanyDTO.builder()
                     .name("Ebay")
                     .description("This is the description of Ebay.")
                     .jobs(Set.of(jobMapper.fromDTO(sale)))
+                    .users(Set.of(userRepository.findByUsername("biancaRebay").get()))
                     .build());
             companyService.create(CompanyDTO.builder()
                     .name("Google")
                     .description("This is the description of Google.")
                     .jobs(Set.of(jobMapper.fromDTO(hr)))
+                    .users(Set.of(userRepository.findByUsername("biancaRgoogle").get()))
+                    .build());
+            companyService.create(CompanyDTO.builder()
+                    .name("Technical University of Cluj-Napoca")
+                    .description("This is the description of TUCN.")
+                    .jobs(Set.of(jobMapper.fromDTO(lecturer)))
+                    .users(Set.of(userRepository.findByUsername("biancaRutcn").get()))
+                    .build());
+            companyService.create(CompanyDTO.builder()
+                    .name("Microsoft")
+                    .description("This is the description of Microsoft.")
+                    .jobs(Set.of(jobMapper.fromDTO(pr)))
+                    .users(Set.of(userRepository.findByUsername("biancaRmicrosoft").get()))
                     .build());
         }
     }
