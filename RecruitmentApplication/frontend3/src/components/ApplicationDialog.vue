@@ -69,7 +69,17 @@ export default {
             resume: this.application.resume,
             job: this.application.job
           })
-          .then(() => this.$emit("refresh"));
+          .then(() => {
+              api.sms.sendMessage({
+                message: this.application.review,
+                number: this.application.phoneNumber,
+              })
+              .then(() => {
+                console.log("Check your phone")
+                this.$emit("refresh");
+              })
+              
+            });
 
           //send email with reviewed applicatnon
     },
